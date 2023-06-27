@@ -1,0 +1,39 @@
+import numpy as np
+import pandas as pd
+from sklearn.preprocessing import StandardScaler
+from sklearn.model_selection import train_test_split
+from sklearn import svm
+from sklearn.metrics import accuracy_score
+diabetes=pd.read_csv('C:\dataset\diabetes dataset.csv',index_col=0)
+diabetes
+diabetes=diabetes.dropna(subset=[7],axis=1)
+diabetes=diabetes.reset_index(drop=True)
+diabetes
+diabetes.groupby('Outcome').mean()
+X=diabetes.drop('Outcome',axis=1)
+y=diabetes.Outcome
+print('x values:',X)
+print('yvalues:',y)
+scaler=StandardScaler()
+scaler.fit(X)
+data=scaler.transform(X)
+X=data
+y=diabetes.Outcome
+X_train,X_test,Y_train,Y_test=train_test_split(X,y,test_size=0.3,stratify=y,random_state=2)
+classifier=svm.SVC(kernel='linear')
+ classifier.fit(X_train,Y_train)
+X_train_prediction=classifier.predict(X_train)
+train_accuracy=accuracy_score(X_train_prediction,Y_train)
+print('ACCURACY OF TRAINING DATA',train_accuracy)
+X_test_prediction=classifier.predict(X_test)
+test_accuracy=accuracy_score(X_test_prediction,Y_test)
+print('ACCURACY OF TEST DATA',test_accuracy)
+input_data=(66 ,135 ,23 ,94 ,21)\
+input_data_as_numpy_array=np.asarray(input_data)
+input_data_reshaped=input_data_as_numpy_array.reshape(1,-1)
+original=classifier.predict(input_data_reshaped)
+print(original)
+if (original[0]==0):
+    print('congrats you dont have diabetes')
+else:
+    print('sorry to say you have diabetes')
